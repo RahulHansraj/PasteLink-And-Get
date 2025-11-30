@@ -47,6 +47,7 @@ def download_media(request: DownloadRequest):
 	ydl_opts = {
 		'format': 'bestaudio/best' if request.kind == 'mp3' else 'bestvideo+bestaudio/best',
 		'outtmpl': output_template,
+		'cookiefile': 'cookies.txt',
 		'postprocessors': []
 	}
 	if request.kind == 'mp3':
