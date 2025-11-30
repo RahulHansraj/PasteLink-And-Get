@@ -1,0 +1,5 @@
+{
+  "name": "PasteLink And Get",
+  "description": "A mobile-first liquid-glass styled web application to download MP4 and MP3 files from YouTube, TikTok, and Instagram using a FastAPI backend.",
+  "requestFramePermissions": []
+}
