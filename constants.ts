@@ -1,6 +1,6 @@
 // In production, this would point to your deployed backend URL.
 // For local development, it points to the FastAPI local server.
-export const API_BASE_URL = 'http://localhost:8000';
+export const API_BASE_URL = 'https://pastelink-andget.onrender.com';
 
 export const ANIMATION_VARIANTS = {
   hidden: { opacity: 0, y: 20 },
