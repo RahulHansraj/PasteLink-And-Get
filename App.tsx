@@ -17,16 +17,14 @@ const App: React.FC = () => {
   useEffect(() => {
     if (url.includes('youtube.com') || url.includes('youtu.be')) {
       setPlatform('youtube');
-    } else if (url.includes('tiktok.com')) {
-      setPlatform('tiktok');
-    } else if (url.includes('instagram.com')) {
+    } else if (url.includes('instagram.com') || url.includes('/reel/') || url.includes('/reels/')) {
       setPlatform('instagram');
     } else {
       setPlatform('unknown');
     }
   }, [url]);
 
-  const handleDownload = async (kind: DownloadType) => {
+  const handleDownload = async (format: DownloadType) => {
     if (!url) {
       setError("Please paste a link first.");
       setTimeout(() => setError(null), 3000);
@@ -49,7 +47,7 @@ const App: React.FC = () => {
          })
       }, 2500);
 
-      const response = await downloadMedia({ url, kind });
+      const response = await downloadMedia(url, format);
       
       clearInterval(progressTimer);
       setProgress('Finalizing download...');
@@ -58,8 +56,9 @@ const App: React.FC = () => {
         throw new Error(response.message || 'Unknown error occurred');
       }
 
-      // Determine MIME type
-      const mimeType = kind === 'mp4' ? 'video/mp4' : 'audio/mpeg';
+      // Determine MIME type based on actual filename extension
+      const ext = response.filename.split('.').pop()?.toLowerCase();
+      const mimeType = ext === 'mp3' ? 'audio/mpeg' : 'video/mp4';
       
       triggerBrowserDownload(response.data, response.filename, mimeType);
       
@@ -97,7 +96,7 @@ const App: React.FC = () => {
               type="text"
               value={url}
               onChange={(e) => setUrl(e.target.value)}
-              placeholder="Paste YouTube, TikTok, or Instagram link..."
+              placeholder="Paste YouTube or Instagram link..."
               className="w-full bg-white/5 border border-white/10 rounded-xl py-4 pl-12 pr-4 text-white placeholder-white/30 focus:outline-none focus:ring-2 focus:ring-cyan-500/50 focus:bg-white/10 transition-all duration-300"
               disabled={loading}
             />
@@ -118,14 +117,15 @@ const App: React.FC = () => {
 
             <button
               onClick={() => handleDownload('mp3')}
-              disabled={loading || !url}
+              disabled={loading || !url || platform === 'instagram'}
               className="relative overflow-hidden group bg-gradient-to-br from-pink-600/80 to-rose-700/80 hover:from-pink-500 hover:to-rose-600 text-white p-4 rounded-xl flex flex-col items-center justify-center gap-2 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed border border-white/10 shadow-lg hover:shadow-pink-500/25"
+              title={platform === 'instagram' ? 'MP3 not available for Instagram' : ''}
             >
               <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300"></div>
               <div className="relative z-10 flex flex-col items-center">
                  <Music size={24} className="mb-1" />
                  <span className="font-semibold text-sm">Download MP3</span>
-                 <span className="text-[10px] text-white/50">Audio</span>
+                 <span className="text-[10px] text-white/50">{platform === 'instagram' ? 'YouTube only' : 'Audio'}</span>
               </div>
             </button>
           </div>

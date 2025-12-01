@@ -1,12 +1,12 @@
-export type Platform = 'youtube' | 'tiktok' | 'instagram' | 'unknown';
+export type Platform = 'youtube' | 'instagram' | 'unknown';
 
 export type DownloadType = 'mp4' | 'mp3';
 
 export interface DownloadResponse {
+  status: 'success' | 'error';
   filename: string;
   data: string; // Base64 encoded string
-  status: 'success' | 'error';
-  message?: string;
+  message: string;
 }
 
 export interface ApiError {
@@ -15,5 +15,5 @@ export interface ApiError {
 
 export interface DownloadRequest {
   url: string;
-  kind: DownloadType;
+  format?: DownloadType;  // Optional - defaults to mp4
 }

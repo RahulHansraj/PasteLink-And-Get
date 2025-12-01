@@ -1,13 +1,15 @@
 import { API_BASE_URL } from '../constants';
-import { DownloadRequest, DownloadResponse } from '../types';
+import { DownloadRequest, DownloadResponse, DownloadType } from '../types';
 
-export const downloadMedia = async (request: DownloadRequest): Promise<DownloadResponse> => {
+export const downloadMedia = async (url: string, format: DownloadType = 'mp4'): Promise<DownloadResponse> => {
   try {
-    if (!request.url) {
+    if (!url) {
         throw new Error("URL is required");
     }
 
-    const response = await fetch(`${API_BASE_URL}/download/`, {
+    const request: DownloadRequest = { url, format };
+
+    const response = await fetch(`${API_BASE_URL}/download`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

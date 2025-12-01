@@ -1,6 +1,6 @@
 import React from 'react';
 import { Platform } from '../types';
-import { Youtube, Instagram, Music, Link as LinkIcon } from 'lucide-react';
+import { Youtube, Instagram, Link as LinkIcon } from 'lucide-react';
 
 interface PlatformIconProps {
   platform: Platform;
@@ -11,8 +11,6 @@ const PlatformIcon: React.FC<PlatformIconProps> = ({ platform }) => {
   switch (platform) {
     case 'youtube':
       return <Youtube className={`${iconClass} text-red-500`} />;
-    case 'tiktok':
-      return <Music className={`${iconClass} text-cyan-400`} />;
     case 'instagram':
       return <Instagram className={`${iconClass} text-pink-500`} />;
     default:
